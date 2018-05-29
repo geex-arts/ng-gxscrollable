@@ -1,11 +1,12 @@
 import { AfterViewChecked, AfterViewInit, Directive, ElementRef, Input, OnInit } from '@angular/core';
-import { BehaviorSubject, fromEvent, Observable } from 'rxjs';
+import { BehaviorSubject, fromEvent, merge, Observable } from 'rxjs';
 import * as _ from 'lodash';
 
 import {
   ComponentDestroyObserver,
   whileComponentNotDestroyed
 } from '../../decorators/component-destroy-observer/component-destroy-observer';
+import { filter } from 'rxjs/operators';
 
 export interface ScrollableState {
   vertical?: {
@@ -35,6 +36,8 @@ export class ScrollableDirective implements OnInit, AfterViewInit, AfterViewChec
   @Input() appScrollableOptions: ScrollableOptions;
 
   private _state = new BehaviorSubject<ScrollableState>(undefined);
+  private dragging = false;
+  private lastTouch;
   private defaultOptions: ScrollableOptions = {
     vertical: true,
     horizontal: false
@@ -61,34 +64,39 @@ export class ScrollableDirective implements OnInit, AfterViewInit, AfterViewChec
     fromEvent<WheelEvent>(this.el.nativeElement, 'wheel')
       .pipe(whileComponentNotDestroyed(this))
       .subscribe(e => {
-        if (this.options.vertical && !this.options.horizontal && Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-          return;
-        }
-
-        if (!this.options.vertical && this.options.horizontal && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-          return;
-        }
-
-        if (this.options.vertical) {
-          const prevPosition = this.el.nativeElement.scrollTop;
-
-          this.el.nativeElement.scrollTop += e.deltaY;
-
-          if (this.el.nativeElement.scrollTop != prevPosition) {
-            e.preventDefault();
-          }
-        }
-
-        if (this.options.horizontal) {
-          const prevPosition = this.el.nativeElement.scrollLeft;
-
-          this.el.nativeElement.scrollLeft += e.deltaX;
-
-          if (this.el.nativeElement.scrollLeft != prevPosition) {
-            e.preventDefault();
-          }
+        if (this.handleScroll(e.deltaX, e.deltaY)) {
+          e.preventDefault();
         }
       });
+
+    fromEvent<TouchEvent>(this.el.nativeElement, 'touchstart')
+      .pipe(whileComponentNotDestroyed(this))
+      .subscribe(e => {
+        this.dragging = true;
+        this.lastTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      });
+
+    fromEvent<TouchEvent>(this.el.nativeElement, 'touchmove')
+      .pipe(
+        filter(() => this.dragging),
+        whileComponentNotDestroyed(this)
+      )
+      .subscribe(e => {
+        const touch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+
+        if (this.lastTouch && this.handleScroll(this.lastTouch.x - touch.x, this.lastTouch.y - touch.y)) {
+          e.preventDefault();
+        }
+
+        this.lastTouch = touch;
+      });
+
+    merge([
+      fromEvent<TouchEvent>(this.el.nativeElement, 'touchend'),
+      fromEvent<TouchEvent>(this.el.nativeElement, 'touchcancel')
+    ])
+      .pipe(whileComponentNotDestroyed(this))
+      .subscribe(() => this.dragging = false);
 
     fromEvent<WheelEvent>(this.el.nativeElement, 'scroll')
       .pipe(whileComponentNotDestroyed(this))
@@ -103,6 +111,40 @@ export class ScrollableDirective implements OnInit, AfterViewInit, AfterViewChec
 
   get options(): ScrollableOptions {
     return _.defaults(this.appScrollableOptions || {}, this.defaultOptions);
+  }
+
+  handleScroll(deltaX, deltaY) {
+    let handled = false;
+
+    if (this.options.vertical && !this.options.horizontal && Math.abs(deltaX) > Math.abs(deltaY)) {
+      return handled;
+    }
+
+    if (!this.options.vertical && this.options.horizontal && Math.abs(deltaY) > Math.abs(deltaX)) {
+      return handled;
+    }
+
+    if (this.options.vertical) {
+      const prevPosition = this.el.nativeElement.scrollTop;
+
+      this.el.nativeElement.scrollTop += deltaY;
+
+      if (this.el.nativeElement.scrollTop != prevPosition) {
+        handled = true;
+      }
+    }
+
+    if (this.options.horizontal) {
+      const prevPosition = this.el.nativeElement.scrollLeft;
+
+      this.el.nativeElement.scrollLeft += deltaX;
+
+      if (this.el.nativeElement.scrollLeft != prevPosition) {
+        handled = true;
+      }
+    }
+
+    return handled;
   }
 
   updateState() {

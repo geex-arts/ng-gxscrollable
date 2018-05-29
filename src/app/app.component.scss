@@ -1,0 +1,10 @@
+.scrollable {
+  position: relative;
+  display: inline-block;
+
+  &__inner {
+    width: 320px;
+    height: 240px;
+    overflow: hidden;
+  }
+}

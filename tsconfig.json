@@ -17,8 +17,8 @@
       "dom"
     ],
     "paths": {
-      "ng-xscrollable": [
-        "dist/ng-xscrollable"
+      "ng-gxscrollable": [
+        "dist/ng-gxscrollable"
       ]
     }
   }

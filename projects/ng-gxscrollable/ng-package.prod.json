@@ -1,7 +1,6 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../dist/ng-xscrollable",
-  "deleteDestPath": false,
+  "dest": "../../dist/ng-gxscrollable",
   "lib": {
     "entryFile": "src/public_api.ts"
   }

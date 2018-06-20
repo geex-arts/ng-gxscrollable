@@ -1,3 +1,4 @@
-ng build ng-xscrollable --prod
-ng build --prod --base-href=/ng-xscrollable/demo/
-mv dist/ng-xscrollable-demo ./demo
+npm install
+ng build ng-gxscrollable --prod
+ng build --prod --base-href=/ng-gxscrollable/demo/
+rm -rf ./demo && mv dist/ng-gxscrollable-demo ./demo

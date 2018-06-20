@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { NgXScrollableModule } from '../../projects/ng-xscrollable/src/lib/ng-xscrollable.module';
+import { NgGxScrollableModule } from '../../projects/ng-gxscrollable/src/lib/ng-gxscrollable.module';
 
 @NgModule({
   declarations: [
@@ -10,7 +10,7 @@ import { NgXScrollableModule } from '../../projects/ng-xscrollable/src/lib/ng-xs
   ],
   imports: [
     BrowserModule,
-    NgXScrollableModule
+    NgGxScrollableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

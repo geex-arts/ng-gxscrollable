@@ -17,4 +17,4 @@ import { ScrollbarComponent } from './components/scrollbar/scrollbar.component';
     ScrollbarComponent
   ]
 })
-export class NgXScrollableModule { }
+export class NgGxScrollableModule { }

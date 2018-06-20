@@ -1,10 +1,10 @@
 {
-  "name": "ng-xscrollable",
-  "version": "0.0.3",
+  "name": "ng-gxscrollable",
+  "version": "0.0.1",
   "description": "Customizable scrollable component",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/geex-arts/ng-xscrollable.git"
+    "url": "git+https://github.com/geex-arts/ng-gxscrollable.git"
   },
   "keywords": [
     "angular2",
@@ -15,9 +15,9 @@
   "author": "Denis Kildishev",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/geex-arts/ng-xscrollable/issues"
+    "url": "https://github.com/geex-arts/ng-gxscrollable/issues"
   },
-  "homepage": "https://github.com/geex-arts/ng-xscrollable",
+  "homepage": "https://github.com/geex-arts/ng-gxscrollable",
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0"

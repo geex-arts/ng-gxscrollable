@@ -13,7 +13,7 @@ import {
 import { ScrollableDirective, ScrollableState } from '../../directives/scrollable/scrollable.directive';
 
 @Component({
-  selector: 'xs-scrollbar',
+  selector: 'gxs-scrollbar',
   templateUrl: './scrollbar.component.html',
   styleUrls: ['./scrollbar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

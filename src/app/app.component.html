@@ -1,7 +1,21 @@
-<h1>Scrollable example</h1>
-<div class="scrollable">
-  <div class="scrollable__inner" xsScrollable #scrollable="scrollableDirective">
-    <div *ngFor="let row of rows">Row {{row}}</div>
+<div>
+  <h1>Scrollable example</h1>
+  <div class="scrollable">
+    <div class="scrollable__inner" xsScrollable #scrollable="scrollableDirective">
+      <div *ngFor="let row of rows">Row {{row}}</div>
+    </div>
+    <gxs-scrollbar [scrollable]="scrollable"></gxs-scrollbar>
   </div>
-  <gxs-scrollbar [scrollable]="scrollable"></gxs-scrollbar>
+</div>
+
+<div>
+  <h1>Scrollable horizontal example</h1>
+  <div class="scrollable">
+    <div class="scrollable__inner" xsScrollable [xsScrollableOptions]="{ horizontal: true }" #scrollable2="scrollableDirective">
+      <div class="scrollable__items-row">
+        <div *ngFor="let row of items" class="scrollable__item">Item {{row}}</div>
+      </div>
+    </div>
+    <gxs-scrollbar [scrollable]="scrollable2"></gxs-scrollbar>
+  </div>
 </div>

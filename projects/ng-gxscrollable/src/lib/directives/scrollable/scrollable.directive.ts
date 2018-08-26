@@ -33,7 +33,7 @@ export interface ScrollableOptions {
 @ComponentDestroyObserver
 export class ScrollableDirective implements OnInit, AfterViewInit, AfterViewChecked {
 
-  @Input() appScrollableOptions: ScrollableOptions;
+  @Input() xsScrollableOptions: ScrollableOptions;
 
   private _state = new BehaviorSubject<ScrollableState>(undefined);
   private dragging = false;
@@ -110,7 +110,7 @@ export class ScrollableDirective implements OnInit, AfterViewInit, AfterViewChec
   }
 
   get options(): ScrollableOptions {
-    return _.defaults(this.appScrollableOptions || {}, this.defaultOptions);
+    return _.defaults(this.xsScrollableOptions || {}, this.defaultOptions);
   }
 
   handleScroll(deltaX, deltaY) {

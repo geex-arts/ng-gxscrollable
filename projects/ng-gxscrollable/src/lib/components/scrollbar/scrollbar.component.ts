@@ -96,4 +96,29 @@ export class ScrollbarComponent implements OnInit, OnDestroy, OnChanges {
   get verticalTopPercentage() {
     return this.state.vertical.progress * (100 - this.verticalHeightPercentage);
   }
+
+  get visibleHorizontal() {
+    if (!this.state || !this.state.horizontal) {
+      return false;
+    }
+
+    if (this.horizontalWidthPercentage == 100) {
+      return false;
+    }
+
+    if (!this.stateUpdatedRecently) {
+      return false;
+    }
+
+    return true;
+  }
+
+  get horizontalWidthPercentage() {
+    const value = this.state.horizontal.viewportLength / this.state.horizontal.scrollLength * 100;
+    return Math.max(value, 5);
+  }
+
+  get horizontalLeftPercentage() {
+    return this.state.horizontal.progress * (100 - this.horizontalWidthPercentage);
+  }
 }

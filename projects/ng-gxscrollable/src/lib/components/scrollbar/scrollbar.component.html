@@ -7,4 +7,12 @@
          [style.height.%]="verticalHeightPercentage">
     </div>
   </div>
+  <div *ngIf="state?.horizontal"
+       class="scrollbar__track scrollbar__track_position_horizontal"
+       [class.scrollbar__track_visible]="visibleHorizontal">
+    <div class="scrollbar__knob scrollbar__knob_position_horizontal"
+         [style.left.%]="horizontalLeftPercentage"
+         [style.width.%]="horizontalWidthPercentage">
+    </div>
+  </div>
 </span>

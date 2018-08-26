@@ -9,6 +9,7 @@ export class AppComponent implements OnInit {
 
   title = 'app';
   rows: number[];
+  items: number[];
 
   ngOnInit(): void {
     const rows = [];
@@ -18,5 +19,13 @@ export class AppComponent implements OnInit {
     }
 
     this.rows = rows;
+
+    const items = [];
+
+    for (let i = 0; i < 100; ++i) {
+      items.push(i);
+    }
+
+    this.items = items;
   }
 }

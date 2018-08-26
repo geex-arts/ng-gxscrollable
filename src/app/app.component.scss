@@ -1,10 +1,24 @@
 .scrollable {
   position: relative;
   display: inline-block;
+}
 
-  &__inner {
-    width: 320px;
-    height: 240px;
-    overflow: hidden;
-  }
+.scrollable__inner {
+  width: 320px;
+  height: 240px;
+  overflow: hidden;
+}
+
+.scrollable__items-row {
+  width: 640px;
+}
+
+.scrollable__item {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  padding: 10px;
+  border: 1px solid #fff;
+  box-shadow: inset 0 0 0 2px #999;
+  box-sizing: border-box;
 }

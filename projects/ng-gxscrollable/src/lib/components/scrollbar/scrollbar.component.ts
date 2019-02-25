@@ -1,9 +1,11 @@
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit,
-  SimpleChanges
+  SimpleChanges,
+  ViewChild, ElementRef
 } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import * as _ from 'lodash';
 
 import {
   ComponentDestroyObserver,
@@ -30,6 +32,14 @@ export class ScrollbarComponent implements OnInit, OnDestroy, OnChanges {
   stateUpdated = new Subject<void>();
   stateUpdatedRecently = false;
   options: ScrollableOptions;
+
+  dragging = false;
+  lastTouch;
+
+  @ViewChild('verticalTrack') verticalTrack: ElementRef;
+  @ViewChild('horizontalTrack') horizontalTrack: ElementRef;
+  @ViewChild('verticalKnob') verticalKnob: ElementRef;
+  @ViewChild('horizontalKnob') horizontalKnob: ElementRef;
 
   constructor(private cd: ChangeDetectorRef) { }
 
@@ -131,5 +141,68 @@ export class ScrollbarComponent implements OnInit, OnDestroy, OnChanges {
 
   get horizontalLeftPercentage() {
     return this.state.horizontal.progress * (100 - this.horizontalWidthPercentage);
+  }
+
+  onTouchStart(e) {
+    console.log('touchstart');
+    this.dragging = true;
+    this.lastTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  }
+  onTouchMove(e) {
+    console.log('touchmove');
+    const touch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+
+    if (this.lastTouch && this.handleScroll(this.lastTouch.x - touch.x, this.lastTouch.y - touch.y)) {
+      e.preventDefault();
+    }
+
+    this.lastTouch = touch;
+    this.updateState();
+  }
+  onTouchEnd(e) {
+    console.log('touchend');
+    this.dragging = false;
+  }
+
+  handleScroll(deltaX, deltaY) {
+    let handled = false;
+
+    if (this.options.vertical && !this.options.horizontal && Math.abs(deltaX) > Math.abs(deltaY)) {
+      return handled;
+    }
+    if (!this.options.vertical && this.options.horizontal && Math.abs(deltaY) > Math.abs(deltaX)) {
+      return handled;
+    }
+
+    if (this.options.vertical && deltaY !== 0) {
+      handled = true;
+    }
+    if (this.options.horizontal && deltaX !== 0) {
+      handled = true;
+    }
+
+    return handled;
+  }
+
+  updateState() {
+    const state = {};
+
+    if (this.options.vertical) {
+      state['vertical'] = {
+        progress: (this.lastTouch.y - this.verticalTrack.nativeElement.offsetTop) / this.state['vertical'].scrollLength,
+      };
+    }
+
+    if (this.options.horizontal) {
+      state['horizontal'] = {
+        progress: (this.lastTouch.x - this.verticalTrack.nativeElement.offsetLeft) / this.state['horizontal'].scrollLength,
+      };
+    }
+
+    if (_.isEqual(this.state, state)) {
+      return;
+    }
+
+    this.state = state;
   }
 }

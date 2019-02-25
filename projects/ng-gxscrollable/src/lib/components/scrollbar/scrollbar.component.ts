@@ -10,7 +10,7 @@ import {
   whileComponentNotDestroyed
 } from '../../decorators/component-destroy-observer/component-destroy-observer';
 
-import { ScrollableDirective, ScrollableState } from '../../directives/scrollable/scrollable.directive';
+import { ScrollableDirective, ScrollableState, ScrollableOptions } from '../../directives/scrollable/scrollable.directive';
 
 @Component({
   selector: 'gxs-scrollbar',
@@ -29,6 +29,7 @@ export class ScrollbarComponent implements OnInit, OnDestroy, OnChanges {
   subscription: Subscription;
   stateUpdated = new Subject<void>();
   stateUpdatedRecently = false;
+  options: ScrollableOptions;
 
   constructor(private cd: ChangeDetectorRef) { }
 
@@ -46,6 +47,8 @@ export class ScrollbarComponent implements OnInit, OnDestroy, OnChanges {
         this.stateUpdatedRecently = false;
         this.cd.detectChanges();
       });
+
+    this.options = this.scrollable.options;
   }
 
   ngOnDestroy(): void {
@@ -73,6 +76,10 @@ export class ScrollbarComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get visibleVertical() {
+    if (this.options.showAlways) {
+      return true;
+    }
+
     if (!this.state || !this.state.vertical) {
       return false;
     }
@@ -98,6 +105,10 @@ export class ScrollbarComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   get visibleHorizontal() {
+    if (this.options.showAlways) {
+      return true;
+    }
+
     if (!this.state || !this.state.horizontal) {
       return false;
     }

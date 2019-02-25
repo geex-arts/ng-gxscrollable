@@ -1,7 +1,11 @@
 <div>
   <h1>Scrollable example</h1>
   <div class="scrollable">
-    <div class="scrollable__inner" xsScrollable #scrollable="scrollableDirective">
+    <div
+      class="scrollable__inner"
+      xsScrollable
+      [xsScrollableOptions]="{ showAlways: true }"
+      #scrollable="scrollableDirective">
       <div *ngFor="let row of rows">Row {{row}}</div>
     </div>
     <gxs-scrollbar [scrollable]="scrollable"></gxs-scrollbar>

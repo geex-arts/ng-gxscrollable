@@ -24,6 +24,7 @@ export interface ScrollableState {
 export interface ScrollableOptions {
   vertical?: boolean;
   horizontal?: boolean;
+  showAlways?: boolean;
 }
 
 @Directive({
@@ -40,7 +41,8 @@ export class ScrollableDirective implements OnInit, AfterViewInit, AfterViewChec
   private lastTouch;
   private defaultOptions: ScrollableOptions = {
     vertical: true,
-    horizontal: false
+    horizontal: false,
+    showAlways: false
   };
 
   get state() {

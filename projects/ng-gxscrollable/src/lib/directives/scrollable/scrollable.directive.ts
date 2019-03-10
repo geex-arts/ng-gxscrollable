@@ -1,6 +1,7 @@
 import { AfterViewChecked, AfterViewInit, Directive, ElementRef, Input, OnInit } from '@angular/core';
 import { BehaviorSubject, fromEvent, merge, Observable } from 'rxjs';
-import * as _ from 'lodash';
+import defaults from 'lodash/defaults';
+import isEqual from 'lodash/isEqual';
 
 import {
   ComponentDestroyObserver,
@@ -110,7 +111,7 @@ export class ScrollableDirective implements OnInit, AfterViewInit, AfterViewChec
   }
 
   get options(): ScrollableOptions {
-    return _.defaults(this.xsScrollableOptions || {}, this.defaultOptions);
+    return defaults(this.xsScrollableOptions || {}, this.defaultOptions);
   }
 
   handleScroll(deltaX, deltaY) {
@@ -170,7 +171,7 @@ export class ScrollableDirective implements OnInit, AfterViewInit, AfterViewChec
       };
     }
 
-    if (_.isEqual(this.state, state)) {
+    if (isEqual(this.state, state)) {
       return;
     }
 

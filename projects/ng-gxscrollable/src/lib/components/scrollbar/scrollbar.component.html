@@ -1,18 +1,34 @@
 <span class="scrollbar" [ngClass]="['scrollbar_theme_' + theme]">
-  <div *ngIf="state?.vertical"
-       class="scrollbar__track scrollbar__track_position_vertical"
-       [class.scrollbar__track_visible]="visibleVertical">
-    <div class="scrollbar__knob scrollbar__knob_position_vertical"
-         [style.top.%]="verticalTopPercentage"
-         [style.height.%]="verticalHeightPercentage">
+  <div
+    *ngIf="state?.vertical"
+    #verticalTrack
+    class="scrollbar__track scrollbar__track_position_vertical"
+    [class.scrollbar__track_visible]="visibleVertical">
+    <div
+      (touchstart)="onTouchStart($event)"
+      (touchmove)="onTouchMove($event)"
+      (touchend)="onTouchEnd($event)"
+      (touchcancel)="onTouchEnd($event)"
+      #verticalKnob
+      class="scrollbar__knob scrollbar__knob_position_vertical"
+      [style.top.%]="verticalTopPercentage"
+      [style.height.%]="verticalHeightPercentage">
     </div>
   </div>
-  <div *ngIf="state?.horizontal"
-       class="scrollbar__track scrollbar__track_position_horizontal"
-       [class.scrollbar__track_visible]="visibleHorizontal">
-    <div class="scrollbar__knob scrollbar__knob_position_horizontal"
-         [style.left.%]="horizontalLeftPercentage"
-         [style.width.%]="horizontalWidthPercentage">
+  <div
+    *ngIf="state?.horizontal"
+    #horizontalTrack
+    class="scrollbar__track scrollbar__track_position_horizontal"
+    [class.scrollbar__track_visible]="visibleHorizontal">
+    <div
+      (touchstart)="onTouchStart($event)"
+      (touchmove)="onTouchMove($event)"
+      (touchend)="onTouchEnd($event)"
+      (touchcancel)="onTouchEnd($event)"
+      #horizontalKnob
+      class="scrollbar__knob scrollbar__knob_position_horizontal"
+      [style.left.%]="horizontalLeftPercentage"
+      [style.width.%]="horizontalWidthPercentage">
     </div>
   </div>
 </span>

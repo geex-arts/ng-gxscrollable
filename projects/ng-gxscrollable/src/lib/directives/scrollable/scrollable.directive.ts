@@ -1,5 +1,6 @@
 import { AfterViewChecked, AfterViewInit, Directive, ElementRef, Input, OnInit } from '@angular/core';
 import { BehaviorSubject, fromEvent, merge, Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import defaults from 'lodash/defaults';
 import isEqual from 'lodash/isEqual';
 
@@ -7,7 +8,6 @@ import {
   ComponentDestroyObserver,
   whileComponentNotDestroyed
 } from '../../decorators/component-destroy-observer/component-destroy-observer';
-import { filter } from 'rxjs/operators';
 
 export interface ScrollableState {
   vertical?: {
@@ -65,7 +65,17 @@ export class ScrollableDirective implements OnInit, AfterViewInit, AfterViewChec
     fromEvent<WheelEvent>(this.el.nativeElement, 'wheel')
       .pipe(whileComponentNotDestroyed(this))
       .subscribe(e => {
-        if (this.handleScroll(e.deltaX, e.deltaY)) {
+        let multiplierX = 1;
+        let multiplierY = 1;
+
+        if (e.deltaMode == 1) {
+          multiplierX = multiplierY = 16;
+        } else if (e.deltaMode == 2) {
+          multiplierX = this.state.horizontal.viewportLength;
+          multiplierY = this.state.vertical.viewportLength;
+        }
+
+        if (this.handleScroll(e.deltaX * multiplierX, e.deltaY * multiplierY)) {
           e.preventDefault();
         }
       });

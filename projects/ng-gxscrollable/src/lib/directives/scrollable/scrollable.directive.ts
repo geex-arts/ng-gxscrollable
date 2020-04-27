@@ -42,7 +42,8 @@ export class ScrollableDirective implements OnInit, AfterViewInit, AfterViewChec
   private lastTouch;
   private defaultOptions: ScrollableOptions = {
     vertical: true,
-    horizontal: false
+    horizontal: false,
+    stopPropagation: true
   };
 
   get state() {
@@ -78,10 +79,10 @@ export class ScrollableDirective implements OnInit, AfterViewInit, AfterViewChec
 
         if (this.handleScroll(e.deltaX * multiplierX, e.deltaY * multiplierY)) {
           e.preventDefault();
-        }
 
-        if (this.options.stopPropagation) {
-          e.preventDefault();
+          if (this.options.stopPropagation) {
+            e.stopPropagation();
+          }
         }
       });
 
@@ -101,11 +102,13 @@ export class ScrollableDirective implements OnInit, AfterViewInit, AfterViewChec
         const touch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
 
         if (this.lastTouch && this.handleScroll(this.lastTouch.x - touch.x, this.lastTouch.y - touch.y)) {
-          e.preventDefault();
-        }
+          if (e.cancelable) {
+            e.preventDefault();
+          }
 
-        if (this.options.stopPropagation) {
-          e.preventDefault();
+          if (this.options.stopPropagation) {
+            e.stopPropagation();
+          }
         }
 
         this.lastTouch = touch;

@@ -19,3 +19,24 @@
     <gxs-scrollbar [scrollable]="scrollable2"></gxs-scrollbar>
   </div>
 </div>
+
+
+<div>
+  <h1>Nested example</h1>
+  <div class="scrollable">
+    <div class="scrollable__inner scrollable__nested-outer" xsScrollable #scrollable3="scrollableDirective">
+
+      <div class="scrollable scrollable__nested-inner">
+        <div class="scrollable__inner" style="height: 400px" xsScrollable #scrollable4="scrollableDirective">
+
+
+          <div class="scrollable" style="height: 600px"></div>
+
+        </div>
+        <gxs-scrollbar [scrollable]="scrollable4"></gxs-scrollbar>
+      </div>
+
+    </div>
+    <gxs-scrollbar [scrollable]="scrollable3"></gxs-scrollbar>
+  </div>
+</div>
